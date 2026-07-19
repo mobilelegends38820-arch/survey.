@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Survey</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+    background:white;
+    position:relative;
+}
+
+h1{
+    text-align:center;
+    margin-top:40px;
+    font-size:42px;
+    font-weight:bold;
+}
+
+button{
+    position:absolute;
+    border:none;
+    border-radius:12px;
+    font-size:22px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:all .12s ease-out;
+}
+
+#yes{
+    width:170px;
+    height:70px;
+    left:15%;
+    bottom:15%;
+    background:#4CAF50;
+    color:white;
+}
+
+#no{
+    width:120px;
+    height:120px;
+    left:60%;
+    bottom:15%;
+    background:#F44336;
+    color:white;
+}
+</style>
+</head>
+<body>
+
+<h1 id="title">Are you gay?</h1>
+
+<button id="yes">Yes</button>
+<button id="no">No</button>
+
+<script>
+
+const yes = document.getElementById("yes");
+const no = document.getElementById("no");
+
+let size = 120;
+
+no.addEventListener("click", () => {
+
+    size -= 16;
+
+    if(size <= 32){
+        no.remove();
+        return;
+    }
+
+    no.style.width = size + "px";
+    no.style.height = size + "px";
+
+    const maxX = window.innerWidth - size;
+    const maxY = window.innerHeight - size;
+
+    no.style.left = Math.random() * maxX + "px";
+    no.style.top = Math.random() * maxY + "px";
+    no.style.bottom = "auto";
+});
+
+yes.addEventListener("click", () => {
+
+    document.body.innerHTML = `
+    <div style="
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        width:100vw;
+        height:100vh;
+        font-size:48px;
+        font-weight:bold;
+        text-align:center;
+    ">
+        I knew you were gay!
+    </div>
+    `;
+});
+
+</script>
+
+</body>
+</html>
