@@ -7,108 +7,139 @@
 <title>Survey</title>
 
 <style>
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial,sans-serif;
+    font-family:Arial, Helvetica, sans-serif;
 }
 
 body{
+    background:linear-gradient(135deg,#89f7fe,#66a6ff);
+    overflow:hidden;
     width:100vw;
     height:100vh;
-    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.container{
     background:white;
+    width:90%;
+    max-width:500px;
+    padding:40px;
+    border-radius:25px;
+    text-align:center;
+    box-shadow:0 15px 40px rgba(0,0,0,.2);
     position:relative;
+    height:400px;
 }
 
 h1{
-    text-align:center;
-    margin-top:40px;
-    font-size:42px;
-    font-weight:bold;
+    font-size:38px;
+    color:#222;
+    margin-bottom:60px;
 }
 
 button{
     position:absolute;
+    width:170px;
+    height:65px;
     border:none;
-    border-radius:12px;
-    font-size:22px;
+    border-radius:15px;
+    color:white;
+    font-size:24px;
     font-weight:bold;
     cursor:pointer;
-    transition:all .12s ease-out;
+    transition:all .15s ease;
+    box-shadow:0 10px 20px rgba(0,0,0,.2);
+}
+
+button:hover{
+    transform:scale(1.05);
 }
 
 #yes{
-    width:170px;
-    height:70px;
-    left:15%;
-    bottom:15%;
-    background:#4CAF50;
-    color:white;
+    background:#22c55e;
+    left:45px;
+    bottom:40px;
 }
 
 #no{
-    width:120px;
-    height:120px;
-    left:60%;
-    bottom:15%;
-    background:#F44336;
-    color:white;
+    background:#ef4444;
+    right:45px;
+    bottom:40px;
 }
+
+.result{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100%;
+    font-size:42px;
+    font-weight:bold;
+    color:#222;
+}
+
 </style>
 </head>
+
 <body>
 
-<h1 id="title">Are you gay?</h1>
+<div class="container" id="container">
+
+<h1>Are you gay?</h1>
 
 <button id="yes">Yes</button>
 <button id="no">No</button>
 
+</div>
+
 <script>
 
-const yes = document.getElementById("yes");
-const no = document.getElementById("no");
+const yes=document.getElementById("yes");
+const no=document.getElementById("no");
+const container=document.getElementById("container");
 
-let size = 120;
+let width=170;
+let height=65;
 
-no.addEventListener("click", () => {
+no.onclick=function(){
 
-    size -= 16;
+    width-=18;
+    height-=7;
 
-    if(size <= 32){
+    if(width<=55){
         no.remove();
         return;
     }
 
-    no.style.width = size + "px";
-    no.style.height = size + "px";
+    no.style.width=width+"px";
+    no.style.height=height+"px";
 
-    const maxX = window.innerWidth - size;
-    const maxY = window.innerHeight - size;
+    const maxX=container.clientWidth-width;
+    const maxY=container.clientHeight-height;
 
-    no.style.left = Math.random() * maxX + "px";
-    no.style.top = Math.random() * maxY + "px";
-    no.style.bottom = "auto";
-});
+    const x=Math.random()*(maxX-20)+10;
+    const y=Math.random()*(maxY-20)+10;
 
-yes.addEventListener("click", () => {
+    no.style.left=x+"px";
+    no.style.top=y+"px";
+    no.style.right="auto";
+    no.style.bottom="auto";
+}
 
-    document.body.innerHTML = `
-    <div style="
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        width:100vw;
-        height:100vh;
-        font-size:48px;
-        font-weight:bold;
-        text-align:center;
-    ">
-        I knew you were gay!
-    </div>
-    `;
-});
+yes.onclick=function(){
+
+container.innerHTML=`
+<div class="result">
+I knew you were gay! 😂
+</div>
+`;
+
+}
 
 </script>
 
