@@ -1,10 +1,13 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Survey</title>
+<title>Will You Be My Valentine? ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
 
@@ -12,85 +15,190 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
+    font-family:'Poppins',sans-serif;
 }
 
 body{
-    background:linear-gradient(135deg,#89f7fe,#66a6ff);
-    overflow:hidden;
     width:100vw;
     height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
+    overflow:hidden;
+    background:linear-gradient(135deg,#ff9a9e,#fecfef,#fad0c4);
+    position:relative;
 }
 
+/* Floating hearts */
+
+.hearts{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    z-index:0;
+}
+
+.heart{
+    position:absolute;
+    bottom:-50px;
+    color:rgba(255,255,255,.45);
+    animation:float linear infinite;
+}
+
+@keyframes float{
+0%{
+transform:translateY(0) rotate(0deg);
+opacity:0;
+}
+20%{
+opacity:1;
+}
+100%{
+transform:translateY(-120vh) rotate(360deg);
+opacity:0;
+}
+}
+
+/* Card */
+
 .container{
-    background:white;
-    width:90%;
-    max-width:500px;
-    padding:40px;
-    border-radius:25px;
-    text-align:center;
-    box-shadow:0 15px 40px rgba(0,0,0,.2);
     position:relative;
-    height:400px;
+    z-index:5;
+
+    width:90%;
+    max-width:520px;
+    height:430px;
+
+    background:rgba(255,255,255,.18);
+    backdrop-filter:blur(15px);
+
+    border-radius:30px;
+
+    box-shadow:0 20px 50px rgba(0,0,0,.25);
+
+    text-align:center;
+
+    padding:35px;
+
+    overflow:hidden;
 }
 
 h1{
-    font-size:38px;
-    color:#222;
-    margin-bottom:60px;
+    color:white;
+    font-size:40px;
+    margin-top:20px;
+    text-shadow:2px 2px 10px rgba(0,0,0,.2);
 }
+
+.subtitle{
+    color:white;
+    font-size:18px;
+    margin-top:15px;
+}
+
+/* Buttons */
 
 button{
     position:absolute;
+
     width:170px;
     height:65px;
+
     border:none;
-    border-radius:15px;
+    border-radius:50px;
+
     color:white;
     font-size:24px;
     font-weight:bold;
+
     cursor:pointer;
-    transition:all .15s ease;
-    box-shadow:0 10px 20px rgba(0,0,0,.2);
+
+    transition:.25s;
+
+    box-shadow:0 12px 25px rgba(0,0,0,.25);
 }
 
 button:hover{
-    transform:scale(1.05);
+    transform:scale(1.08);
 }
 
 #yes{
-    background:#22c55e;
-    left:45px;
+    left:40px;
     bottom:40px;
+    background:linear-gradient(45deg,#22c55e,#16a34a);
 }
 
 #no{
-    background:#ef4444;
-    right:45px;
+    right:40px;
     bottom:40px;
+    background:linear-gradient(45deg,#ef4444,#dc2626);
 }
 
+/* Result */
+
 .result{
+    height:100%;
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100%;
-    font-size:42px;
-    font-weight:bold;
-    color:#222;
+    flex-direction:column;
+    animation:pop .5s;
+}
+
+.result h1{
+    font-size:55px;
+}
+
+.result p{
+    color:white;
+    font-size:24px;
+    margin-top:15px;
+}
+
+@keyframes pop{
+from{
+transform:scale(.5);
+opacity:0;
+}
+to{
+transform:scale(1);
+opacity:1;
+}
+}
+
+/* Confetti */
+
+.confetti{
+    position:absolute;
+    width:10px;
+    height:10px;
+    animation:fall linear forwards;
+}
+
+@keyframes fall{
+0%{
+transform:translateY(-100px) rotate(0deg);
+}
+100%{
+transform:translateY(120vh) rotate(720deg);
+}
 }
 
 </style>
+
 </head>
 
 <body>
 
+<div class="hearts" id="hearts"></div>
+
 <div class="container" id="container">
 
-<h1>WILL YOU BE MY VALENTINE?</h1>
+<h1>❤️ Will You Be My Valentine? ❤️</h1>
+
+<p class="subtitle">
+Please choose carefully... 😊
+</p>
 
 <button id="yes">Yes</button>
 <button id="no">No</button>
@@ -102,42 +210,118 @@ button:hover{
 const yes=document.getElementById("yes");
 const no=document.getElementById("no");
 const container=document.getElementById("container");
+const hearts=document.getElementById("hearts");
 
-let width=170;
-let height=65;
+let noWidth=170;
+let noHeight=65;
+let yesScale=1;
+
+for(let i=0;i<25;i++){
+
+    const heart=document.createElement("div");
+
+    heart.className="heart";
+    heart.innerHTML="❤";
+
+    heart.style.left=Math.random()*100+"%";
+    heart.style.fontSize=(18+Math.random()*28)+"px";
+
+    heart.style.animationDuration=(6+Math.random()*8)+"s";
+    heart.style.animationDelay=(Math.random()*8)+"s";
+
+    hearts.appendChild(heart);
+
+}
 
 no.onclick=function(){
 
-    width-=18;
-    height-=7;
+    noWidth=Math.max(55,noWidth-18);
+    noHeight=Math.max(30,noHeight-7);
 
-    if(width<=55){
+    no.style.width=noWidth+"px";
+    no.style.height=noHeight+"px";
+
+    yesScale+=0.08;
+    yes.style.transform=`scale(${yesScale})`;
+
+    if(noWidth<=55){
+
         no.remove();
         return;
+
     }
 
-    no.style.width=width+"px";
-    no.style.height=height+"px";
+    const yesRect=yes.getBoundingClientRect();
+    const containerRect=container.getBoundingClientRect();
 
-    const maxX=container.clientWidth-width;
-    const maxY=container.clientHeight-height;
+    let x,y;
+    let safe=false;
 
-    const x=Math.random()*(maxX-20)+10;
-    const y=Math.random()*(maxY-20)+10;
+    while(!safe){
+
+        x=Math.random()*(container.clientWidth-noWidth-20)+10;
+        y=Math.random()*(container.clientHeight-noHeight-20)+10;
+
+        const left=x+containerRect.left;
+        const top=y+containerRect.top;
+        const right=left+noWidth;
+        const bottom=top+noHeight;
+
+        safe=
+        right<yesRect.left-25 ||
+        left>yesRect.right+25 ||
+        bottom<yesRect.top-25 ||
+        top>yesRect.bottom+25;
+
+    }
 
     no.style.left=x+"px";
     no.style.top=y+"px";
     no.style.right="auto";
     no.style.bottom="auto";
+
 }
 
 yes.onclick=function(){
 
-container.innerHTML=`
-<div class="result">
-YEYYYY!!!!
-</div>
-`;
+    container.innerHTML=`
+
+    <div class="result">
+
+        <h1>🥰 YEYYYY!! ❤️</h1>
+
+        <p>
+        You made my day! 💖
+        </p>
+
+    </div>
+
+    `;
+
+    for(let i=0;i<180;i++){
+
+        const conf=document.createElement("div");
+
+        conf.className="confetti";
+
+        conf.style.left=Math.random()*100+"vw";
+        conf.style.top="-20px";
+
+        conf.style.background=
+        `hsl(${Math.random()*360},100%,60%)`;
+
+        conf.style.animationDuration=
+        (2+Math.random()*3)+"s";
+
+        document.body.appendChild(conf);
+
+        setTimeout(()=>{
+
+            conf.remove();
+
+        },5000);
+
+    }
 
 }
 
